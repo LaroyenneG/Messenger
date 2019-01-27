@@ -21,6 +21,10 @@ public class Client {
         receivedDataListeners = new ArrayList<>();
     }
 
+    private static String getDataInDataGramPacket(DatagramPacket datagramPacket) {
+
+        return new String(datagramPacket.getData(), 0, datagramPacket.getLength());
+    }
 
     private static void printReceiveLog(DatagramPacket datagramPacket) {
 
@@ -33,7 +37,8 @@ public class Client {
         stringBuilder.append(':');
         stringBuilder.append(datagramPacket.getPort());
         stringBuilder.append(" ==> ");
-        stringBuilder.append(new String(datagramPacket.getData()));
+
+        stringBuilder.append(getDataInDataGramPacket(datagramPacket));
 
         System.out.println(stringBuilder);
     }
@@ -54,7 +59,7 @@ public class Client {
                 break;
             }
 
-            String data = new String(datagramPacket.getData());
+            String data = getDataInDataGramPacket(datagramPacket);
 
             if (this.data == null || this.data.equals(data)) {
                 fireReceivedDataListener(new ReceivedDataEvent(this));

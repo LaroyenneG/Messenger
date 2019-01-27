@@ -34,6 +34,9 @@ public class Server implements SendingObject {
                     StringBuilder stringBuilder = new StringBuilder();
                     for (int i = 3; i < args.length; i++) {
                         stringBuilder.append(args[i]);
+                        if (i + 1 < args.length) {
+                            stringBuilder.append(' ');
+                        }
                     }
 
                     String address = args[0];
