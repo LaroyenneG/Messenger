@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Client {
@@ -21,6 +22,22 @@ public class Client {
     }
 
 
+    private static void printReceiveLog(DatagramPacket datagramPacket) {
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append('[');
+        stringBuilder.append(new Date());
+        stringBuilder.append("] ");
+        stringBuilder.append(datagramPacket.getAddress().getHostName());
+        stringBuilder.append(':');
+        stringBuilder.append(datagramPacket.getPort());
+        stringBuilder.append(" ==> ");
+        stringBuilder.append(new String(datagramPacket.getData()));
+
+        System.out.println(stringBuilder);
+    }
+
     public void process() {
 
         final byte[] buffer = new byte[1204];
@@ -31,6 +48,7 @@ public class Client {
 
             try {
                 datagramSocket.receive(datagramPacket);
+                printReceiveLog(datagramPacket);
             } catch (IOException e) {
                 e.printStackTrace();
                 break;

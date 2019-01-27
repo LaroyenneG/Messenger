@@ -113,7 +113,10 @@ public class Server implements SendingObject {
             this.sendingObject = sendingObject;
         }
 
-        private static void printSendMessageLog(Message message, StringBuilder stringBuilder) {
+        private static void printSendMessageLog(Message message) {
+
+            StringBuilder stringBuilder = new StringBuilder();
+
             stringBuilder.append('[');
             stringBuilder.append(new Date());
             stringBuilder.append("] ");
@@ -122,7 +125,8 @@ public class Server implements SendingObject {
             stringBuilder.append(message.getPort());
             stringBuilder.append(" ==> ");
             stringBuilder.append(message.getData());
-            stringBuilder.append('\n');
+
+            System.out.println(stringBuilder);
         }
 
         @Override
@@ -130,21 +134,19 @@ public class Server implements SendingObject {
 
             while (!isInterrupted()) {
 
-                StringBuilder stringBuilder = new StringBuilder();
 
                 List<Message> removedMessage = new LinkedList<>();
 
                 for (Message message : messages) {
                     try {
                         sendingObject.sendMessage(message);
-                        printSendMessageLog(message, stringBuilder);
+                        printSendMessageLog(message);
                     } catch (IOException e) {
                         removedMessage.add(message);
                         e.printStackTrace();
                     }
                 }
 
-                System.out.print(stringBuilder);
 
                 messages.removeAll(removedMessage);
 
