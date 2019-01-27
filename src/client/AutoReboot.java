@@ -1,7 +1,4 @@
-package client.action;
-
-import client.ReceivedDataEvent;
-import client.ReceivedDataListener;
+package client;
 
 import java.io.IOException;
 

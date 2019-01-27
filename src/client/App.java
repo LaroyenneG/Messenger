@@ -1,7 +1,5 @@
 package client;
 
-import client.action.AutoReboot;
-
 import java.io.IOException;
 import java.net.DatagramSocket;
 
