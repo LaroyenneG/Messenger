@@ -1,3 +1,5 @@
+package server;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -6,12 +8,12 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.*;
 
-public class Messenger implements SendingObject {
+public class Server implements SendingObject {
 
     private Map<Message, Long> messages;
     private DatagramSocket datagramSocket;
 
-    public Messenger(DatagramSocket datagramSocket) {
+    public Server(DatagramSocket datagramSocket) {
         messages = new HashMap<>();
         this.datagramSocket = datagramSocket;
     }

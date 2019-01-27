@@ -1,3 +1,5 @@
+package server;
+
 import java.io.IOException;
 import java.net.DatagramSocket;
 
@@ -6,7 +8,7 @@ public class App {
     public static void main(String[] args) throws IOException {
 
         if (args.length != 2) {
-            System.out.println("Usage : java Messenger <port> <file>");
+            System.out.println("Usage : java server.Server <port> <file>");
             System.exit(-1);
         }
 
@@ -14,10 +16,10 @@ public class App {
 
         DatagramSocket datagramSocket = new DatagramSocket(port);
 
-        Messenger messenger = new Messenger(datagramSocket);
+        Server server = new Server(datagramSocket);
 
-        messenger.loadDataFile(args[1]);
+        server.loadDataFile(args[1]);
 
-        messenger.process();
+        server.process();
     }
 }
