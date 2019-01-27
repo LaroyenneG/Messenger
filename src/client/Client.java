@@ -55,6 +55,10 @@ public class Client {
         return data;
     }
 
+    public void setData(String data) {
+        this.data = data;
+    }
+
     public void addReceivedDataListener(ReceivedDataListener listener) {
         receivedDataListeners.add(listener);
     }

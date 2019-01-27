@@ -8,7 +8,7 @@ public class App {
     public static void main(String[] args) throws IOException {
 
         if (args.length != 2) {
-            System.out.println("Usage : java server.Server <port> <file>");
+            System.out.println("Usage : java Server <port> <file>");
             System.exit(-1);
         }
 
