@@ -4,6 +4,8 @@ import java.io.IOException;
 
 public class AutoReboot extends Thread implements ReceivedDataListener {
 
+    private static final int MAX_VALUE = 10;
+
     private int counter;
 
     public AutoReboot(int counter) {
@@ -12,9 +14,22 @@ public class AutoReboot extends Thread implements ReceivedDataListener {
 
     @Override
     public void actionReceived(ReceivedDataEvent event) {
-        counter++;
+        increment();
     }
 
+    private synchronized void increment() {
+
+        if (counter < MAX_VALUE) {
+            counter += MAX_VALUE / 2;
+        }
+    }
+
+    private synchronized void decrement() {
+
+        if (counter >= 0) {
+            counter--;
+        }
+    }
 
     @Override
     public void run() {
@@ -30,7 +45,7 @@ public class AutoReboot extends Thread implements ReceivedDataListener {
                 }
             }
 
-            counter--;
+            decrement();
 
             try {
                 Thread.sleep(1000);
