@@ -23,4 +23,6 @@ echo "Main-Class: server.App" >> out/server/MANIFEST.MF;
 
 jar cvmf out/server/MANIFEST.MF server.jar out/server/*.class;
 
+rm -r out/;
+
 exit 0;
