@@ -12,8 +12,6 @@ public class App {
             System.exit(-1);
         }
 
-        System.out.close();
-
         int port = Integer.parseInt(args[0]);
         int counter = Integer.parseInt(args[2]);
 
