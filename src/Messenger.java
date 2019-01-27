@@ -99,10 +99,20 @@ public class Messenger implements SendingObject {
         private long time;
 
 
-        public ThreadMessage(List<Message> messages, long time, SendingObject sendingObject) {
+        private ThreadMessage(List<Message> messages, long time, SendingObject sendingObject) {
             this.messages = messages;
             this.time = time;
             this.sendingObject = sendingObject;
+        }
+
+        private static void printSendMessageLog(Message message, StringBuilder stringBuilder) {
+            stringBuilder.append('[');
+            stringBuilder.append(new Date());
+            stringBuilder.append("] ");
+            stringBuilder.append(message.getInetAddress().getHostName());
+            stringBuilder.append(" ==> ");
+            stringBuilder.append(message.getData());
+            stringBuilder.append('\n');
         }
 
         @Override
@@ -110,16 +120,21 @@ public class Messenger implements SendingObject {
 
             while (!isInterrupted()) {
 
+                StringBuilder stringBuilder = new StringBuilder();
+
                 List<Message> removedMessage = new LinkedList<>();
 
                 for (Message message : messages) {
                     try {
                         sendingObject.sendMessage(message);
+                        printSendMessageLog(message, stringBuilder);
                     } catch (IOException e) {
                         removedMessage.add(message);
                         e.printStackTrace();
                     }
                 }
+
+                System.out.print(stringBuilder);
 
                 messages.removeAll(removedMessage);
 
