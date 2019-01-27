@@ -4,12 +4,13 @@ import java.io.IOException;
 
 public class AutoReboot extends Thread implements ReceivedDataListener {
 
-    private static final int MAX_VALUE = 10;
+    private final int maxValue;
 
     private int counter;
 
     public AutoReboot(int counter) {
         this.counter = counter;
+        maxValue = counter;
     }
 
     @Override
@@ -19,8 +20,8 @@ public class AutoReboot extends Thread implements ReceivedDataListener {
 
     private synchronized void increment() {
 
-        if (counter < MAX_VALUE) {
-            counter += MAX_VALUE / 2;
+        if (counter < maxValue) {
+            counter += maxValue / 2;
         }
     }
 
