@@ -37,12 +37,18 @@ public class Server implements SendingObject {
                     }
 
                     String address = args[0];
+
                     int port = Integer.parseInt(args[1]);
+
                     long time = Long.parseLong(args[2]);
+
                     String data = new String(stringBuilder);
+
                     InetAddress inetAddress = InetAddress.getByName(address);
 
-                    messages.put(new Message(inetAddress, port, data), time);
+                    Message message = new Message(inetAddress, port, data);
+
+                    messages.put(message, time);
                 }
             }
             reader.close();
@@ -112,6 +118,8 @@ public class Server implements SendingObject {
             stringBuilder.append(new Date());
             stringBuilder.append("] ");
             stringBuilder.append(message.getInetAddress().getHostName());
+            stringBuilder.append(':');
+            stringBuilder.append(message.getPort());
             stringBuilder.append(" ==> ");
             stringBuilder.append(message.getData());
             stringBuilder.append('\n');
