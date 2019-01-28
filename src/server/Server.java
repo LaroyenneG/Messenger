@@ -13,9 +13,12 @@ public class Server implements SendingObject {
     private Map<Message, Long> messages;
     private DatagramSocket datagramSocket;
 
+    private List<Thread> threads;
+
     public Server(DatagramSocket datagramSocket) {
         messages = new HashMap<>();
         this.datagramSocket = datagramSocket;
+        threads = new LinkedList<>();
     }
 
     public void loadDataFile(String dataFilePath) {
@@ -62,7 +65,15 @@ public class Server implements SendingObject {
 
     public void process() {
 
-        List<Thread> threads = new LinkedList<>();
+        for (Thread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        threads.clear();
 
         Map<Long, List<Message>> longListMap = new HashMap<>();
 
@@ -83,16 +94,21 @@ public class Server implements SendingObject {
         for (Thread thread : threads) {
             thread.start();
         }
-
-        for (Thread thread : threads) {
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
+
+    public void stop() {
+
+        for (Thread thread : threads) {
+            thread.interrupt();
+        }
+
+        threads.clear();
+    }
+
+    public void clear() {
+        messages.clear();
+    }
 
     public synchronized void sendMessage(Message message) throws IOException {
 
