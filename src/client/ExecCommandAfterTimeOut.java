@@ -2,15 +2,18 @@ package client;
 
 import java.io.IOException;
 
-public class AutoReboot extends Thread implements ReceivedDataListener {
+public class ExecCommandAfterTimeOut extends Thread implements ReceivedDataListener {
 
     private final int maxValue;
 
     private int counter;
 
-    public AutoReboot(int counter) {
+    private final String comand;
+
+    public ExecCommandAfterTimeOut(int counter, String command) {
         this.counter = counter;
         maxValue = counter;
+        this.comand = command;
     }
 
     @Override
@@ -39,8 +42,8 @@ public class AutoReboot extends Thread implements ReceivedDataListener {
 
             if (counter <= 0) {
                 try {
-                    Runtime.getRuntime().exec("sudo reboot");
-                    System.exit(-1);
+                    Runtime.getRuntime().exec(comand);
+                    break;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

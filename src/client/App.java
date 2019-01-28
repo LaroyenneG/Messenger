@@ -21,10 +21,10 @@ public class App {
 
         client.setData(args[1]);
 
-        AutoReboot autoReboot = new AutoReboot(counter);
-        autoReboot.start();
+        ExecCommandAfterTimeOut execCommandAfterTimeOut = new ExecCommandAfterTimeOut(counter, "sudo reboot");
+        execCommandAfterTimeOut.start();
 
-        client.addReceivedDataListener(autoReboot);
+        client.addReceivedDataListener(execCommandAfterTimeOut);
 
         client.process();
     }
