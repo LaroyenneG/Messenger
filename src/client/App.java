@@ -21,7 +21,7 @@ public class App {
 
         client.setData(args[1]);
 
-        ExecCommandAfterTimeOut execCommandAfterTimeOut = new ExecCommandAfterTimeOut(counter, "sudo reboot");
+        ExecCommandAfterTimeOut execCommandAfterTimeOut = new ExecCommandAfterTimeOut(counter, "");
         execCommandAfterTimeOut.start();
 
         client.addReceivedDataListener(execCommandAfterTimeOut);
