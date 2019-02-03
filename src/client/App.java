@@ -1,31 +1,53 @@
 package client;
 
-import java.io.IOException;
 import java.net.DatagramSocket;
+import java.net.SocketException;
 
 public class App {
 
-    public static void main(String[] args) throws IOException {
+    private static int TIME_TO_SLEEP = 1000;
+    private static int MAX_FAIL_COUNT = 1000;
+
+    public static void main(String[] args) {
 
         if (args.length != 3) {
             System.out.println("Usage : java Client <port> <data> <counter>");
             System.exit(-1);
         }
 
-        int port = Integer.parseInt(args[0]);
-        int counter = Integer.parseInt(args[2]);
+        int failCount = 0;
 
-        DatagramSocket datagramSocket = new DatagramSocket(port);
+        while (failCount < MAX_FAIL_COUNT) {
 
-        Client client = new Client(datagramSocket);
+            try {
+                int port = Integer.parseInt(args[0]);
+                int counter = Integer.parseInt(args[2]);
 
-        client.setData(args[1]);
+                DatagramSocket datagramSocket = new DatagramSocket(port);
 
-        ExecCommandAfterTimeOut execCommandAfterTimeOut = new ExecCommandAfterTimeOut(counter, "sudo reboot");
-        execCommandAfterTimeOut.start();
+                Client client = new Client(datagramSocket);
 
-        client.addReceivedDataListener(execCommandAfterTimeOut);
+                client.setData(args[1]);
 
-        client.process();
+                ExecCommandAfterTimeOut execCommandAfterTimeOut = new ExecCommandAfterTimeOut(counter, "sudo reboot");
+                execCommandAfterTimeOut.start();
+
+                client.addReceivedDataListener(execCommandAfterTimeOut);
+
+                client.process();
+
+            } catch (SocketException e) {
+                e.printStackTrace();
+                failCount++;
+            }
+
+
+            try {
+                Thread.sleep(TIME_TO_SLEEP);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                break;
+            }
+        }
     }
 }

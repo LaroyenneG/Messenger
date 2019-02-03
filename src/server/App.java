@@ -1,25 +1,45 @@
 package server;
 
-import java.io.IOException;
 import java.net.DatagramSocket;
+import java.net.SocketException;
 
 public class App {
 
-    public static void main(String[] args) throws IOException {
+    private static int TIME_TO_SLEEP = 1000;
+    private static int MAX_FAIL_COUNT = 1000;
+
+    public static void main(String[] args) {
 
         if (args.length != 2) {
             System.out.println("Usage : java Server <port> <file>");
             System.exit(-1);
         }
 
-        int port = Integer.parseInt(args[0]);
+        int failCount = 0;
 
-        DatagramSocket datagramSocket = new DatagramSocket(port);
+        while (failCount < MAX_FAIL_COUNT) {
 
-        Server server = new Server(datagramSocket);
+            try {
+                int port = Integer.parseInt(args[0]);
 
-        server.loadDataFile(args[1]);
+                DatagramSocket datagramSocket = new DatagramSocket(port);
 
-        server.process();
+                Server server = new Server(datagramSocket);
+
+                server.loadDataFile(args[1]);
+
+                server.process();
+            } catch (SocketException e) {
+                e.printStackTrace();
+                failCount++;
+            }
+
+            try {
+                Thread.sleep(TIME_TO_SLEEP);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                break;
+            }
+        }
     }
 }
